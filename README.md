@@ -6,7 +6,7 @@ You can finally clean up coding agents you downloaded without using a package ma
 
 ## 🚀 Get Started
 
-CLI Uninstaller removes coding-agent CLIs installed on macOS and Linux by custom shell scripts like `curl ... | bash`. It intentionally skips tools installed through npm, pipx, Homebrew, or other package managers.
+CLI Uninstaller removes coding-agent CLIs installed by custom shell scripts like `curl ... | bash` and `irm ... | iex`. It intentionally skips tools installed through npm, pipx, Homebrew, WinGet, or other package managers.
 
 ## 🧽 Uninstall
 
@@ -20,6 +20,12 @@ macOS / Linux:
 curl -fsSL https://raw.githubusercontent.com/jcjc-dev/cli-uninstaller/main/uninstall.sh | bash -s -- junie
 ```
 
+Windows PowerShell:
+
+```powershell
+& ([scriptblock]::Create((irm https://raw.githubusercontent.com/jcjc-dev/cli-uninstaller/main/uninstall.ps1))) junie
+```
+
 ### 🤖 GitHub Copilot CLI
 
 macOS / Linux custom installer:
@@ -27,6 +33,10 @@ macOS / Linux custom installer:
 ```sh
 curl -fsSL https://raw.githubusercontent.com/jcjc-dev/cli-uninstaller/main/uninstall.sh | bash -s -- copilot-cli
 ```
+
+Windows:
+
+Native Windows installs are managed by WinGet and are intentionally out of scope for this repo.
 
 ### 🤖 Claude Code
 
@@ -36,9 +46,21 @@ macOS / Linux native installer:
 curl -fsSL https://raw.githubusercontent.com/jcjc-dev/cli-uninstaller/main/uninstall.sh | bash -s -- claude-code
 ```
 
+Windows PowerShell native installer:
+
+```powershell
+& ([scriptblock]::Create((irm https://raw.githubusercontent.com/jcjc-dev/cli-uninstaller/main/uninstall.ps1))) claude-code
+```
+
 ### 🤖 OpenCode
 
 macOS / Linux custom installer:
+
+```sh
+curl -fsSL https://raw.githubusercontent.com/jcjc-dev/cli-uninstaller/main/uninstall.sh | bash -s -- opencode
+```
+
+Windows Git Bash / MSYS2 / Cygwin:
 
 ```sh
 curl -fsSL https://raw.githubusercontent.com/jcjc-dev/cli-uninstaller/main/uninstall.sh | bash -s -- opencode
@@ -54,7 +76,13 @@ To also remove user data, add `--purge` on macOS/Linux:
 curl -fsSL https://raw.githubusercontent.com/jcjc-dev/cli-uninstaller/main/uninstall.sh | bash -s -- junie --purge
 ```
 
-Use `--yes` only when the caller has already confirmed that deleting install artifacts without prompts is intended.
+On Windows PowerShell, add `-Purge`:
+
+```powershell
+& ([scriptblock]::Create((irm https://raw.githubusercontent.com/jcjc-dev/cli-uninstaller/main/uninstall.ps1))) junie -Purge
+```
+
+Use `--yes` or `-Yes` only when the caller has already confirmed that deleting install artifacts without prompts is intended.
 
 ## 🎯 What This Covers
 
@@ -67,16 +95,17 @@ Verified tools:
 
 Not covered:
 
-- Windows
-- npm, npx, pnpm, Yarn, pipx, Homebrew, apt, dnf, pacman, or other package-manager installs
+- npm, npx, pnpm, Yarn, pipx, Homebrew, WinGet, apt, dnf, pacman, or other package-manager installs
 - wrappers that simply call a package manager
 - IDE extensions and marketplace installs
 
 Platforms:
 
 - macOS and Linux: Bash scripts under `scripts/` plus the `uninstall.sh` dispatcher.
+- Windows PowerShell: supported for tools with native script installers, currently Junie CLI and Claude Code.
+- Windows Git Bash / MSYS2 / Cygwin: supported for tools whose upstream installer uses Bash-compatible Windows paths, currently OpenCode.
 
-Windows users should uninstall coding agents using the vendor's Windows instructions or the package manager that installed them. For example, GitHub Copilot CLI's native Windows installer uses WinGet, so uninstall it with `winget uninstall GitHub.Copilot`.
+Windows package-manager installs are still out of scope. For example, GitHub Copilot CLI's native Windows installer uses WinGet, so uninstall it with `winget uninstall GitHub.Copilot`.
 
 ## 🛡️ Safety Model
 

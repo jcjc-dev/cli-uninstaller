@@ -112,23 +112,89 @@ jobs:
           esac
 
   windows-unsupported:
-    name: Windows unsupported
+    name: Windows custom script installers
     runs-on: windows-latest
+    timeout-minutes: 20
+    strategy:
+      fail-fast: false
+      matrix:
+        tool:
+          - junie
+          - claude-code
     steps:
       - name: Checkout
         uses: actions/checkout@v4
 
-      - name: Confirm no Windows dispatcher exists
+      - name: Install ${{ matrix.tool }}
         shell: pwsh
         run: |
-          if (Test-Path .\uninstall.ps1) {
-            throw "Windows support is intentionally out of scope; uninstall.ps1 must not exist."
+          switch ("${{ matrix.tool }}") {
+            "junie" {
+              irm https://junie.jetbrains.com/install.ps1 | iex
+              if (-not (Test-Path "$HOME\.local\bin\junie.bat")) { throw "junie.bat was not installed" }
+            }
+            "claude-code" {
+              irm https://claude.ai/install.ps1 | iex
+              if (-not ((Test-Path "$HOME\.local\bin\claude") -or (Test-Path "$HOME\.local\bin\claude.exe") -or (Test-Path "$HOME\.local\bin\claude.cmd"))) {
+                throw "claude launcher was not installed"
+              }
+            }
           }
 
-      - name: Confirm README says Windows is not covered
+      - name: Uninstall ${{ matrix.tool }} using checked-out code
         shell: pwsh
         run: |
-          $lines = Get-Content .\README.md
-          if (-not ($lines | Where-Object { $_ -eq "- Windows" })) {
-            throw "README must explicitly list Windows as not covered."
+          & ([scriptblock]::Create((Get-Content .\uninstall.ps1 -Raw))) "${{ matrix.tool }}" -Yes -Purge
+
+      - name: Verify ${{ matrix.tool }} was removed
+        shell: pwsh
+        run: |
+          switch ("${{ matrix.tool }}") {
+            "junie" {
+              if (Test-Path "$HOME\.local\bin\junie.bat") { throw "junie.bat still exists" }
+              if (Test-Path "$HOME\.local\share\junie") { throw "Junie data still exists" }
+            }
+            "claude-code" {
+              if (Test-Path "$HOME\.local\bin\claude") { throw "claude still exists" }
+              if (Test-Path "$HOME\.local\bin\claude.exe") { throw "claude.exe still exists" }
+              if (Test-Path "$HOME\.local\bin\claude.cmd") { throw "claude.cmd still exists" }
+              if (Test-Path "$HOME\.local\share\claude") { throw "Claude install data still exists" }
+              if (Test-Path "$HOME\.cache\claude") { throw "Claude cache still exists" }
+            }
           }
+
+  windows-bash-opencode:
+    name: opencode on windows-latest Git Bash
+    runs-on: windows-latest
+    timeout-minutes: 20
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Install opencode
+        shell: bash
+        run: |
+          set -euo pipefail
+          export PATH="$HOME/.opencode/bin:$PATH"
+          version="$(gh release view --repo anomalyco/opencode --json tagName --jq '.tagName | ltrimstr("v")')"
+          curl -fsSL https://opencode.ai/install | bash -s -- --version "$version" --no-modify-path
+          command -v opencode
+          opencode --version
+
+      - name: Uninstall opencode using checked-out code
+        shell: bash
+        run: |
+          set -euo pipefail
+          export PATH="$HOME/.opencode/bin:$PATH"
+          export CLI_UNINSTALLER_BASE_URL="file://$GITHUB_WORKSPACE"
+
+          cat uninstall.sh | bash -s -- opencode --yes --purge
+
+      - name: Verify opencode was removed
+        shell: bash
+        run: |
+          set -euo pipefail
+          export PATH="$HOME/.opencode/bin:$PATH"
+
+          ! command -v opencode
+          test ! -e "$HOME/.opencode/bin/opencode"

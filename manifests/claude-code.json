@@ -2,10 +2,13 @@
   "id": "claude-code",
   "name": "Claude Code",
   "install_commands": [
-    "curl -fsSL https://claude.ai/install.sh | bash"
+    "curl -fsSL https://claude.ai/install.sh | bash",
+    "irm https://claude.ai/install.ps1 | iex"
   ],
   "installer_artifacts": [
     "~/.local/bin/claude",
+    "~/.local/bin/claude.exe",
+    "~/.local/bin/claude.cmd",
     "~/.local/share/claude",
     "~/.cache/claude"
   ],
