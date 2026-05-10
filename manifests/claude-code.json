@@ -2,20 +2,16 @@
   "id": "claude-code",
   "name": "Claude Code",
   "install_commands": [
-    "curl -fsSL https://claude.ai/install.sh | bash",
-    "irm https://claude.ai/install.ps1 | iex"
+    "curl -fsSL https://claude.ai/install.sh | bash"
   ],
   "installer_artifacts": [
     "~/.local/bin/claude",
     "~/.local/share/claude",
-    "~/.cache/claude",
-    "%LOCALAPPDATA%\\Claude\\claude.exe"
+    "~/.cache/claude"
   ],
   "user_data": [
     "~/.claude",
-    "${XDG_CONFIG_HOME:-~/.config}/claude",
-    "%APPDATA%\\Claude",
-    "%LOCALAPPDATA%\\Claude"
+    "${XDG_CONFIG_HOME:-~/.config}/claude"
   ],
   "notes": [
     "The native installer places the claude binary under ~/.local/bin according to vendor help and docs.",

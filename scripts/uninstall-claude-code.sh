@@ -67,4 +67,4 @@ remove_user_data \
   "$HOME/.claude" "This may include auth state, settings, commands, memories, projects, transcripts, and session history." \
   "${XDG_CONFIG_HOME:-$HOME/.config}/claude" "This may include user configuration."
 
-log "Done. Homebrew, npm, WinGet, and system package installations should be removed with their package manager."
+log "Done. Homebrew, npm, and system package installations should be removed with their package manager."

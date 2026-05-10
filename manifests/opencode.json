@@ -16,7 +16,6 @@
   ],
   "notes": [
     "The observed installer installs into ~/.opencode/bin.",
-    "The installer detects MINGW, MSYS, and CYGWIN as Windows and supports windows-x64 through Bash-compatible shells.",
     "OpenCode documentation and ecosystem references identify ~/.config/opencode as the global config path; data/cache directories are purge-only."
   ]
 }
