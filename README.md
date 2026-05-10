@@ -60,7 +60,7 @@ curl -fsSL https://raw.githubusercontent.com/jcjc-dev/cli-uninstaller/main/unins
 
 Windows:
 
-No verified custom Windows installer is currently covered.
+Use the macOS/Linux command from Git Bash, MSYS2, or Cygwin. The upstream OpenCode installer supports Windows through Bash-compatible shells.
 
 ## ⚙️ Options
 
@@ -99,7 +99,7 @@ Platforms:
 
 - macOS and Linux: Bash scripts under `scripts/` plus the `uninstall.sh` dispatcher.
 - Windows: native PowerShell support through `uninstall.ps1` for verified custom Windows installers only.
-- Windows Git Bash, MSYS2, and WSL are not the primary Windows path. Use `uninstall.ps1` for native Windows installs.
+- Windows Bash-compatible shells: supported for tools whose upstream custom installer uses Git Bash, MSYS2, or Cygwin paths, currently OpenCode.
 
 ## 🛡️ Safety Model
 
