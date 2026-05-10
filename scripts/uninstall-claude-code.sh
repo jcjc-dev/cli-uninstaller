@@ -2,9 +2,38 @@
 
 set -euo pipefail
 
-SCRIPT_DIR="$(cd -- "$(dirname -- "${BASH_SOURCE[0]}")" && pwd)"
-# shellcheck source=../lib/common.sh
-source "$SCRIPT_DIR/../lib/common.sh"
+load_common() {
+  local source_path="${BASH_SOURCE[0]:-}"
+  local local_common=""
+
+  if [[ "$source_path" == */* ]]; then
+    local_common="$(cd -- "$(dirname -- "$source_path")" && pwd)/../lib/common.sh"
+  fi
+
+  if [[ -n "$local_common" && -r "$local_common" ]]; then
+    # shellcheck source=../lib/common.sh
+    source "$local_common"
+    return
+  fi
+
+  local base_url="${CLI_UNINSTALLER_BASE_URL:-https://raw.githubusercontent.com/jcjc-dev/cli-uninstaller/main}"
+  CLI_UNINSTALLER_COMMON_TMP="$(mktemp "${TMPDIR:-/tmp}/cli-uninstaller-common.XXXXXX")"
+  trap 'rm -f "$CLI_UNINSTALLER_COMMON_TMP"' EXIT
+
+  if command -v curl >/dev/null 2>&1; then
+    curl -fsSL "$base_url/lib/common.sh" -o "$CLI_UNINSTALLER_COMMON_TMP"
+  elif command -v wget >/dev/null 2>&1; then
+    wget -qO "$CLI_UNINSTALLER_COMMON_TMP" "$base_url/lib/common.sh"
+  else
+    echo "curl or wget is required to fetch cli-uninstaller helpers." >&2
+    exit 1
+  fi
+
+  # shellcheck source=../lib/common.sh
+  source "$CLI_UNINSTALLER_COMMON_TMP"
+}
+
+load_common
 
 usage() {
   cat <<'EOF'

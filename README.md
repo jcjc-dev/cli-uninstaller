@@ -24,7 +24,52 @@ Shared shell profile changes are not edited automatically. Installers commonly a
 
 ## Usage
 
-Dry run:
+Run the top-level dispatcher directly from GitHub:
+
+```sh
+curl -fsSL https://raw.githubusercontent.com/jcjc-dev/cli-uninstaller/main/uninstall.sh | bash -s -- junie --dry-run
+curl -fsSL https://raw.githubusercontent.com/jcjc-dev/cli-uninstaller/main/uninstall.sh | bash -s -- copilot-cli --dry-run
+curl -fsSL https://raw.githubusercontent.com/jcjc-dev/cli-uninstaller/main/uninstall.sh | bash -s -- claude-code --dry-run
+curl -fsSL https://raw.githubusercontent.com/jcjc-dev/cli-uninstaller/main/uninstall.sh | bash -s -- opencode --dry-run
+```
+
+Remove install artifacts:
+
+```sh
+curl -fsSL https://raw.githubusercontent.com/jcjc-dev/cli-uninstaller/main/uninstall.sh | bash -s -- junie
+```
+
+Remove install artifacts and ask about user data:
+
+```sh
+curl -fsSL https://raw.githubusercontent.com/jcjc-dev/cli-uninstaller/main/uninstall.sh | bash -s -- junie --purge
+```
+
+Non-interactive install-artifact removal:
+
+```sh
+curl -fsSL https://raw.githubusercontent.com/jcjc-dev/cli-uninstaller/main/uninstall.sh | bash -s -- copilot-cli --yes
+```
+
+Non-interactive purge:
+
+```sh
+curl -fsSL https://raw.githubusercontent.com/jcjc-dev/cli-uninstaller/main/uninstall.sh | bash -s -- copilot-cli --yes --purge
+```
+
+Use non-interactive purge only when the caller has already confirmed that deleting the tool's user state is intended.
+
+You can also fetch a tool-specific script directly:
+
+```sh
+curl -fsSL https://raw.githubusercontent.com/jcjc-dev/cli-uninstaller/main/scripts/uninstall-junie.sh | bash -s -- --dry-run
+```
+
+The tool-specific scripts fetch `lib/common.sh` from the default GitHub raw URL when they are not run from a local checkout. Set `CLI_UNINSTALLER_BASE_URL` to test a fork, branch, tag, or local raw host.
+
+## Local Development
+
+Dry run from a checkout:
 
 ```sh
 ./scripts/uninstall-junie.sh --dry-run
@@ -32,35 +77,6 @@ Dry run:
 ./scripts/uninstall-claude-code.sh --dry-run
 ./scripts/uninstall-opencode.sh --dry-run
 ```
-
-Remove install artifacts:
-
-```sh
-./scripts/uninstall-junie.sh
-./scripts/uninstall-copilot-cli.sh
-./scripts/uninstall-claude-code.sh
-./scripts/uninstall-opencode.sh
-```
-
-Remove install artifacts and ask about user data:
-
-```sh
-./scripts/uninstall-junie.sh --purge
-```
-
-Non-interactive install-artifact removal:
-
-```sh
-./scripts/uninstall-copilot-cli.sh --yes
-```
-
-Non-interactive purge:
-
-```sh
-./scripts/uninstall-copilot-cli.sh --yes --purge
-```
-
-Use non-interactive purge only when the caller has already confirmed that deleting the tool's user state is intended.
 
 ## Manifests
 
