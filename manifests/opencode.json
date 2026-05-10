@@ -6,12 +6,15 @@
     "curl -fsSL https://opencode.ai/install.sh | sh"
   ],
   "installer_artifacts": [
-    "~/.opencode/bin/opencode"
+    "~/.opencode/bin/opencode",
+    "~/.opencode/bin/opencode.exe"
   ],
   "user_data": [
     "${OPENCODE_CONFIG:-${XDG_CONFIG_HOME:-~/.config}/opencode}",
     "${XDG_DATA_HOME:-~/.local/share}/opencode",
     "${XDG_CACHE_HOME:-~/.cache}/opencode",
+    "%APPDATA%\\opencode",
+    "%LOCALAPPDATA%\\opencode",
     "~/.opencode"
   ],
   "notes": [

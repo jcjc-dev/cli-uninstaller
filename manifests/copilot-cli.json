@@ -7,7 +7,8 @@
   ],
   "installer_artifacts": [
     "${PREFIX:-~/.local}/bin/copilot",
-    "/usr/local/bin/copilot"
+    "/usr/local/bin/copilot",
+    "winget package GitHub.Copilot on native Windows"
   ],
   "user_data": [
     "${COPILOT_HOME:-~/.copilot}",

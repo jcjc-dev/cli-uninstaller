@@ -3,10 +3,12 @@
   "name": "JetBrains Junie CLI",
   "install_commands": [
     "curl -fsSL https://junie.jetbrains.com/install.sh | bash",
-    "curl -fsSL https://junie.jetbrains.com/install-eap.sh | bash"
+    "curl -fsSL https://junie.jetbrains.com/install-eap.sh | bash",
+    "powershell -NoProfile -ExecutionPolicy Bypass -Command \"iex (irm 'https://junie.jetbrains.com/install.ps1')\""
   ],
   "installer_artifacts": [
     "~/.local/bin/junie",
+    "~/.local/bin/junie.bat",
     "${JUNIE_DATA:-~/.local/share/junie}"
   ],
   "user_data": [

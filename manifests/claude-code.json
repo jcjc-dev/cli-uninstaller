@@ -8,11 +8,14 @@
   "installer_artifacts": [
     "~/.local/bin/claude",
     "~/.local/share/claude",
-    "~/.cache/claude"
+    "~/.cache/claude",
+    "%LOCALAPPDATA%\\Claude\\claude.exe"
   ],
   "user_data": [
     "~/.claude",
-    "${XDG_CONFIG_HOME:-~/.config}/claude"
+    "${XDG_CONFIG_HOME:-~/.config}/claude",
+    "%APPDATA%\\Claude",
+    "%LOCALAPPDATA%\\Claude"
   ],
   "notes": [
     "The native installer places the claude binary under ~/.local/bin according to vendor help and docs.",

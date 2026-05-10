@@ -11,6 +11,12 @@ This repo captures uninstall behavior by reversing installer scripts and vendor 
 - Claude Code native installer
 - OpenCode script installer
 
+Platform support:
+
+- macOS and Linux: Bash scripts under `scripts/` plus the `uninstall.sh` dispatcher.
+- Windows: native PowerShell support through `uninstall.ps1`.
+- Windows Git Bash, MSYS2, and WSL are not the primary Windows path. Use `uninstall.ps1` for native Windows installs.
+
 ## Safety Model
 
 Each script separates:
@@ -24,7 +30,9 @@ Shared shell profile changes are not edited automatically. Installers commonly a
 
 ## Usage
 
-Run the top-level dispatcher directly from GitHub:
+### macOS and Linux
+
+Run the top-level Bash dispatcher directly from GitHub:
 
 ```sh
 curl -fsSL https://raw.githubusercontent.com/jcjc-dev/cli-uninstaller/main/uninstall.sh | bash -s -- junie --dry-run
@@ -67,6 +75,41 @@ curl -fsSL https://raw.githubusercontent.com/jcjc-dev/cli-uninstaller/main/scrip
 
 The tool-specific scripts fetch `lib/common.sh` from the default GitHub raw URL when they are not run from a local checkout. Set `CLI_UNINSTALLER_BASE_URL` to test a fork, branch, tag, or local raw host.
 
+### Windows
+
+Run the top-level PowerShell dispatcher directly from GitHub:
+
+```powershell
+& ([scriptblock]::Create((irm https://raw.githubusercontent.com/jcjc-dev/cli-uninstaller/main/uninstall.ps1))) junie -DryRun
+& ([scriptblock]::Create((irm https://raw.githubusercontent.com/jcjc-dev/cli-uninstaller/main/uninstall.ps1))) copilot-cli -DryRun
+& ([scriptblock]::Create((irm https://raw.githubusercontent.com/jcjc-dev/cli-uninstaller/main/uninstall.ps1))) claude-code -DryRun
+& ([scriptblock]::Create((irm https://raw.githubusercontent.com/jcjc-dev/cli-uninstaller/main/uninstall.ps1))) opencode -DryRun
+```
+
+Remove install artifacts:
+
+```powershell
+& ([scriptblock]::Create((irm https://raw.githubusercontent.com/jcjc-dev/cli-uninstaller/main/uninstall.ps1))) junie
+```
+
+Remove install artifacts and ask about user data:
+
+```powershell
+& ([scriptblock]::Create((irm https://raw.githubusercontent.com/jcjc-dev/cli-uninstaller/main/uninstall.ps1))) junie -Purge
+```
+
+Non-interactive install-artifact removal:
+
+```powershell
+& ([scriptblock]::Create((irm https://raw.githubusercontent.com/jcjc-dev/cli-uninstaller/main/uninstall.ps1))) copilot-cli -Yes
+```
+
+Non-interactive purge:
+
+```powershell
+& ([scriptblock]::Create((irm https://raw.githubusercontent.com/jcjc-dev/cli-uninstaller/main/uninstall.ps1))) copilot-cli -Yes -Purge
+```
+
 ## Local Development
 
 Dry run from a checkout:
@@ -78,6 +121,12 @@ Dry run from a checkout:
 ./scripts/uninstall-opencode.sh --dry-run
 ```
 
+PowerShell syntax check from a checkout:
+
+```powershell
+$null = [scriptblock]::Create((Get-Content .\uninstall.ps1 -Raw))
+```
+
 ## Manifests
 
 The `manifests/` directory records installer commands, install artifacts, user-data paths, and notes for each supported tool. Scripts should stay aligned with their corresponding manifest.
@@ -87,7 +136,7 @@ The `manifests/` directory records installer commands, install artifacts, user-d
 Run:
 
 ```sh
-bash -n lib/common.sh scripts/*.sh
+bash -n uninstall.sh lib/common.sh scripts/*.sh
 ```
 
 Optionally run dry-run checks for each script before publishing changes.
