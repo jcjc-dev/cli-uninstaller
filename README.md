@@ -1,5 +1,7 @@
 # 🧹 CLI Uninstaller
 
+[![Validation](https://github.com/jcjc-dev/cli-uninstaller/actions/workflows/validation.yml/badge.svg)](https://github.com/jcjc-dev/cli-uninstaller/actions/workflows/validation.yml)
+
 You can finally clean up coding agents you downloaded without using a package manager.
 
 ## 🚀 Get Started
