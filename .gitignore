@@ -1,0 +1,3 @@
+# Local research notes should not be committed.
+/docs/research.md
+/docs/research*.md
