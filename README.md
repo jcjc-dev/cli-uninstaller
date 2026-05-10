@@ -1,6 +1,6 @@
 # 🧹 CLI Uninstaller
 
-[![Validation](https://github.com/jcjc-dev/cli-uninstaller/actions/workflows/validation.yml/badge.svg)](https://github.com/jcjc-dev/cli-uninstaller/actions/workflows/validation.yml)
+[![Nightly Validation](https://github.com/jcjc-dev/cli-uninstaller/actions/workflows/nightly-validation.yml/badge.svg)](https://github.com/jcjc-dev/cli-uninstaller/actions/workflows/nightly-validation.yml)
 
 You can finally clean up coding agents you downloaded without using a package manager.
 
@@ -75,6 +75,8 @@ Not covered:
 Platforms:
 
 - macOS and Linux: Bash scripts under `scripts/` plus the `uninstall.sh` dispatcher.
+
+Windows users should uninstall coding agents using the vendor's Windows instructions or the package manager that installed them. For example, GitHub Copilot CLI's native Windows installer uses WinGet, so uninstall it with `winget uninstall GitHub.Copilot`.
 
 ## 🛡️ Safety Model
 

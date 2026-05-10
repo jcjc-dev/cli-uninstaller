@@ -1,0 +1,134 @@
+name: Nightly Validation
+
+on:
+  schedule:
+    - cron: "23 9 * * *"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+env:
+  FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: true
+  GH_TOKEN: ${{ github.token }}
+
+jobs:
+  bash-syntax:
+    name: Bash syntax
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Validate Bash scripts
+        run: bash -n uninstall.sh lib/common.sh scripts/*.sh
+
+  uninstall-smoke:
+    name: ${{ matrix.tool }} on ${{ matrix.os }}
+    needs: bash-syntax
+    runs-on: ${{ matrix.os }}
+    timeout-minutes: 20
+    strategy:
+      fail-fast: false
+      matrix:
+        os:
+          - ubuntu-latest
+          - macos-latest
+        tool:
+          - junie
+          - copilot-cli
+          - claude-code
+          - opencode
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Install ${{ matrix.tool }}
+        shell: bash
+        run: |
+          set -euo pipefail
+          export PATH="$HOME/.local/bin:$HOME/.opencode/bin:$PATH"
+
+          case "${{ matrix.tool }}" in
+            junie)
+              curl -fsSL https://junie.jetbrains.com/install.sh | bash
+              command -v junie
+              junie --version
+              ;;
+            copilot-cli)
+              curl -fsSL https://gh.io/copilot-install | bash
+              command -v copilot
+              copilot --help >/dev/null
+              ;;
+            claude-code)
+              curl -fsSL https://claude.ai/install.sh | bash
+              command -v claude
+              claude --version
+              ;;
+            opencode)
+              version="$(gh release view --repo anomalyco/opencode --json tagName --jq '.tagName | ltrimstr("v")')"
+              curl -fsSL https://opencode.ai/install | bash -s -- --version "$version" --no-modify-path
+              command -v opencode
+              opencode --version
+              ;;
+          esac
+
+      - name: Uninstall ${{ matrix.tool }} using checked-out code
+        shell: bash
+        run: |
+          set -euo pipefail
+          export PATH="$HOME/.local/bin:$HOME/.opencode/bin:$PATH"
+          export CLI_UNINSTALLER_BASE_URL="file://$GITHUB_WORKSPACE"
+
+          cat uninstall.sh | bash -s -- "${{ matrix.tool }}" --yes --purge
+
+      - name: Verify ${{ matrix.tool }} was removed
+        shell: bash
+        run: |
+          set -euo pipefail
+          export PATH="$HOME/.local/bin:$HOME/.opencode/bin:$PATH"
+
+          case "${{ matrix.tool }}" in
+            junie)
+              ! command -v junie
+              test ! -e "$HOME/.local/bin/junie"
+              test ! -e "$HOME/.local/share/junie"
+              ;;
+            copilot-cli)
+              ! command -v copilot
+              test ! -e "$HOME/.local/bin/copilot"
+              ;;
+            claude-code)
+              ! command -v claude
+              test ! -e "$HOME/.local/bin/claude"
+              test ! -e "$HOME/.local/share/claude"
+              test ! -e "$HOME/.cache/claude"
+              ;;
+            opencode)
+              ! command -v opencode
+              test ! -e "$HOME/.opencode/bin/opencode"
+              ;;
+          esac
+
+  windows-unsupported:
+    name: Windows unsupported
+    runs-on: windows-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Confirm no Windows dispatcher exists
+        shell: pwsh
+        run: |
+          if (Test-Path .\uninstall.ps1) {
+            throw "Windows support is intentionally out of scope; uninstall.ps1 must not exist."
+          }
+
+      - name: Confirm README says Windows is not covered
+        shell: pwsh
+        run: |
+          $lines = Get-Content .\README.md
+          if (-not ($lines | Where-Object { $_ -eq "- Windows" })) {
+            throw "README must explicitly list Windows as not covered."
+          }

@@ -1,13 +1,7 @@
-name: Validation
+name: PR Validation
 
 on:
   pull_request:
-  push:
-    branches:
-      - main
-  schedule:
-    - cron: "23 9 * * *"
-  workflow_dispatch:
 
 permissions:
   contents: read
