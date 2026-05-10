@@ -1,6 +1,80 @@
-# CLI Uninstaller
+# Get Started
 
 Conservative uninstall scripts for agentic coding CLIs installed by custom shell installers, especially `curl ... | bash` and `irm ... | iex` flows that bypass npm, pipx, Homebrew, Chocolatey, and WinGet.
+
+## Uninstall
+
+Choose your tool and platform, then copy one command.
+
+### Junie CLI
+
+macOS / Linux:
+
+```sh
+curl -fsSL https://raw.githubusercontent.com/jcjc-dev/cli-uninstaller/main/uninstall.sh | bash -s -- junie
+```
+
+Windows:
+
+```powershell
+& ([scriptblock]::Create((irm https://raw.githubusercontent.com/jcjc-dev/cli-uninstaller/main/uninstall.ps1))) junie
+```
+
+### GitHub Copilot CLI
+
+macOS / Linux custom installer:
+
+```sh
+curl -fsSL https://raw.githubusercontent.com/jcjc-dev/cli-uninstaller/main/uninstall.sh | bash -s -- copilot-cli
+```
+
+Windows:
+
+Native Windows installs are managed by WinGet and are intentionally out of scope for this repo.
+
+### Claude Code
+
+macOS / Linux native installer:
+
+```sh
+curl -fsSL https://raw.githubusercontent.com/jcjc-dev/cli-uninstaller/main/uninstall.sh | bash -s -- claude-code
+```
+
+Windows:
+
+```powershell
+& ([scriptblock]::Create((irm https://raw.githubusercontent.com/jcjc-dev/cli-uninstaller/main/uninstall.ps1))) claude-code
+```
+
+### OpenCode
+
+macOS / Linux custom installer:
+
+```sh
+curl -fsSL https://raw.githubusercontent.com/jcjc-dev/cli-uninstaller/main/uninstall.sh | bash -s -- opencode
+```
+
+Windows:
+
+No verified custom Windows installer is currently covered.
+
+## Options
+
+By default, scripts remove install artifacts only. User data is kept.
+
+To also remove user data, add `--purge` on macOS/Linux:
+
+```sh
+curl -fsSL https://raw.githubusercontent.com/jcjc-dev/cli-uninstaller/main/uninstall.sh | bash -s -- junie --purge
+```
+
+Or add `-Purge` on Windows:
+
+```powershell
+& ([scriptblock]::Create((irm https://raw.githubusercontent.com/jcjc-dev/cli-uninstaller/main/uninstall.ps1))) junie -Purge
+```
+
+Use `--yes` or `-Yes` only when the caller has already confirmed that deleting install artifacts without prompts is intended.
 
 ## Scope
 
@@ -30,73 +104,9 @@ Each script separates:
 - install artifacts: binaries, shims, version directories, update payloads
 - user data: auth state, settings, conversations, transcripts, permissions, logs, skills, hooks, allowlists, and caches
 
-Default uninstall removes install artifacts only. User data is kept unless `--purge` is provided, and interactive runs ask before deleting each user-data path.
+Default uninstall removes install artifacts only. User data is kept unless `--purge` or `-Purge` is provided, and interactive runs ask before deleting each user-data path.
 
 Shared shell profile changes are not edited automatically. Installers commonly add `~/.local/bin` or another bin directory to PATH, but that path is often shared by many tools.
-
-## Usage
-
-### Junie CLI
-
-macOS/Linux:
-
-```sh
-curl -fsSL https://raw.githubusercontent.com/jcjc-dev/cli-uninstaller/main/uninstall.sh | bash -s -- junie
-```
-
-Windows PowerShell:
-
-```powershell
-& ([scriptblock]::Create((irm https://raw.githubusercontent.com/jcjc-dev/cli-uninstaller/main/uninstall.ps1))) junie
-```
-
-To also remove Junie user data, add `--purge` on macOS/Linux or `-Purge` on Windows.
-
-### GitHub Copilot CLI
-
-macOS/Linux custom installer only:
-
-```sh
-curl -fsSL https://raw.githubusercontent.com/jcjc-dev/cli-uninstaller/main/uninstall.sh | bash -s -- copilot-cli
-```
-
-Windows:
-
-Native Windows installs are managed by WinGet and are intentionally out of scope for this repo.
-
-To also remove Copilot CLI user data for the custom installer, add `--purge`.
-
-### Claude Code
-
-macOS/Linux native installer:
-
-```sh
-curl -fsSL https://raw.githubusercontent.com/jcjc-dev/cli-uninstaller/main/uninstall.sh | bash -s -- claude-code
-```
-
-Windows PowerShell native installer:
-
-```powershell
-& ([scriptblock]::Create((irm https://raw.githubusercontent.com/jcjc-dev/cli-uninstaller/main/uninstall.ps1))) claude-code
-```
-
-Package-manager installs are out of scope. To also remove Claude Code user data, add `--purge` on macOS/Linux or `-Purge` on Windows.
-
-### OpenCode
-
-macOS/Linux custom installer:
-
-```sh
-curl -fsSL https://raw.githubusercontent.com/jcjc-dev/cli-uninstaller/main/uninstall.sh | bash -s -- opencode
-```
-
-Windows:
-
-No verified custom Windows installer is currently covered.
-
-To also remove OpenCode user data for the custom installer, add `--purge`.
-
-Use `--yes` or `-Yes` only when the caller has already confirmed that deleting install artifacts without prompts is intended.
 
 ## Manifests
 
