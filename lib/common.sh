@@ -66,13 +66,17 @@ confirm() {
     return 0
   fi
 
-  if [[ ! -t 0 ]]; then
+  local reply
+  if [[ -r /dev/tty && -w /dev/tty ]]; then
+    printf '%s [y/N] ' "$prompt" >/dev/tty
+    read -r reply </dev/tty
+  elif [[ -t 0 ]]; then
+    printf '%s [y/N] ' "$prompt"
+    read -r reply
+  else
     return 1
   fi
 
-  local reply
-  printf '%s [y/N] ' "$prompt"
-  read -r reply
   case "$reply" in
     y|Y|yes|YES) return 0 ;;
     *) return 1 ;;
