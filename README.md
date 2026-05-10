@@ -1,6 +1,6 @@
 # CLI Uninstaller
 
-Conservative uninstall scripts for agentic coding CLIs installed by custom shell installers, especially `curl ... | bash` flows that bypass npm, Homebrew, Chocolatey, and WinGet.
+Conservative uninstall scripts for agentic coding CLIs installed by custom shell installers, especially `curl ... | bash` and `irm ... | iex` flows that bypass npm, pipx, Homebrew, Chocolatey, and WinGet.
 
 ## Scope
 
@@ -11,10 +11,16 @@ This repo captures uninstall behavior by reversing installer scripts and vendor 
 - Claude Code native installer
 - OpenCode script installer
 
+Out of scope:
+
+- npm, npx, pnpm, Yarn, pipx, Homebrew, Chocolatey, WinGet, apt, dnf, pacman, or other package-manager installs
+- wrappers that simply call a package manager
+- IDE extensions and marketplace installs
+
 Platform support:
 
 - macOS and Linux: Bash scripts under `scripts/` plus the `uninstall.sh` dispatcher.
-- Windows: native PowerShell support through `uninstall.ps1`.
+- Windows: native PowerShell support through `uninstall.ps1` for verified custom Windows installers only.
 - Windows Git Bash, MSYS2, and WSL are not the primary Windows path. Use `uninstall.ps1` for native Windows installs.
 
 ## Safety Model
@@ -81,9 +87,7 @@ Run the top-level PowerShell dispatcher directly from GitHub:
 
 ```powershell
 & ([scriptblock]::Create((irm https://raw.githubusercontent.com/jcjc-dev/cli-uninstaller/main/uninstall.ps1))) junie -DryRun
-& ([scriptblock]::Create((irm https://raw.githubusercontent.com/jcjc-dev/cli-uninstaller/main/uninstall.ps1))) copilot-cli -DryRun
 & ([scriptblock]::Create((irm https://raw.githubusercontent.com/jcjc-dev/cli-uninstaller/main/uninstall.ps1))) claude-code -DryRun
-& ([scriptblock]::Create((irm https://raw.githubusercontent.com/jcjc-dev/cli-uninstaller/main/uninstall.ps1))) opencode -DryRun
 ```
 
 Remove install artifacts:
@@ -101,13 +105,13 @@ Remove install artifacts and ask about user data:
 Non-interactive install-artifact removal:
 
 ```powershell
-& ([scriptblock]::Create((irm https://raw.githubusercontent.com/jcjc-dev/cli-uninstaller/main/uninstall.ps1))) copilot-cli -Yes
+& ([scriptblock]::Create((irm https://raw.githubusercontent.com/jcjc-dev/cli-uninstaller/main/uninstall.ps1))) claude-code -Yes
 ```
 
 Non-interactive purge:
 
 ```powershell
-& ([scriptblock]::Create((irm https://raw.githubusercontent.com/jcjc-dev/cli-uninstaller/main/uninstall.ps1))) copilot-cli -Yes -Purge
+& ([scriptblock]::Create((irm https://raw.githubusercontent.com/jcjc-dev/cli-uninstaller/main/uninstall.ps1))) claude-code -Yes -Purge
 ```
 
 ## Local Development

@@ -7,8 +7,7 @@
   ],
   "installer_artifacts": [
     "${PREFIX:-~/.local}/bin/copilot",
-    "/usr/local/bin/copilot",
-    "winget package GitHub.Copilot on native Windows"
+    "/usr/local/bin/copilot"
   ],
   "user_data": [
     "${COPILOT_HOME:-~/.copilot}",
@@ -16,6 +15,7 @@
   ],
   "notes": [
     "The install script defaults PREFIX to ~/.local for non-root users and /usr/local for root, then extracts copilot into PREFIX/bin.",
+    "Native Windows install currently delegates to WinGet and is out of scope for this repository.",
     "GitHub documents ~/.copilot as the default configuration directory and documents platform cache directories separately."
   ]
 }
