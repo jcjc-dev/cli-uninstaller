@@ -12,6 +12,9 @@ on:
 permissions:
   contents: read
 
+env:
+  FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: true
+
 jobs:
   bash-syntax:
     name: Bash syntax
@@ -67,7 +70,8 @@ jobs:
               claude --version
               ;;
             opencode)
-              curl -fsSL https://opencode.ai/install | bash -s -- --no-modify-path
+              version="$(gh release view --repo anomalyco/opencode --json tagName --jq '.tagName | ltrimstr("v")')"
+              curl -fsSL https://opencode.ai/install | bash -s -- --version "$version" --no-modify-path
               command -v opencode
               opencode --version
               ;;
@@ -127,7 +131,7 @@ jobs:
       - name: Confirm README says Windows is not covered
         shell: pwsh
         run: |
-          $readme = Get-Content .\README.md -Raw
-          if ($readme -notmatch "(?m)^- Windows$") {
+          $lines = Get-Content .\README.md
+          if (-not ($lines | Where-Object { $_ -eq "- Windows" })) {
             throw "README must explicitly list Windows as not covered."
           }
