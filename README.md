@@ -1,12 +1,16 @@
-# Get Started
+# 🧹 CLI Uninstaller
 
-Conservative uninstall scripts for agentic coding CLIs installed by custom shell installers, especially `curl ... | bash` and `irm ... | iex` flows that bypass npm, pipx, Homebrew, Chocolatey, and WinGet.
+You can finally clean up coding agents you downloaded without using a package manager.
 
-## Uninstall
+## 🚀 Get Started
+
+CLI Uninstaller removes coding-agent CLIs installed by custom shell scripts like `curl ... | bash` and `irm ... | iex`. It intentionally skips tools installed through npm, pipx, Homebrew, Chocolatey, WinGet, or other package managers.
+
+## 🧽 Uninstall
 
 Choose your tool and platform, then copy one command.
 
-### Junie CLI
+### 🤖 Junie CLI
 
 macOS / Linux:
 
@@ -20,7 +24,7 @@ Windows:
 & ([scriptblock]::Create((irm https://raw.githubusercontent.com/jcjc-dev/cli-uninstaller/main/uninstall.ps1))) junie
 ```
 
-### GitHub Copilot CLI
+### 🤖 GitHub Copilot CLI
 
 macOS / Linux custom installer:
 
@@ -32,7 +36,7 @@ Windows:
 
 Native Windows installs are managed by WinGet and are intentionally out of scope for this repo.
 
-### Claude Code
+### 🤖 Claude Code
 
 macOS / Linux native installer:
 
@@ -46,7 +50,7 @@ Windows:
 & ([scriptblock]::Create((irm https://raw.githubusercontent.com/jcjc-dev/cli-uninstaller/main/uninstall.ps1))) claude-code
 ```
 
-### OpenCode
+### 🤖 OpenCode
 
 macOS / Linux custom installer:
 
@@ -58,7 +62,7 @@ Windows:
 
 No verified custom Windows installer is currently covered.
 
-## Options
+## ⚙️ Options
 
 By default, scripts remove install artifacts only. User data is kept.
 
@@ -76,28 +80,28 @@ Or add `-Purge` on Windows:
 
 Use `--yes` or `-Yes` only when the caller has already confirmed that deleting install artifacts without prompts is intended.
 
-## Scope
+## 🎯 What This Covers
 
-This repo captures uninstall behavior by reversing installer scripts and vendor documentation. The first verified tools are:
+Verified tools:
 
 - JetBrains Junie CLI
 - GitHub Copilot CLI
 - Claude Code native installer
 - OpenCode script installer
 
-Out of scope:
+Not covered:
 
 - npm, npx, pnpm, Yarn, pipx, Homebrew, Chocolatey, WinGet, apt, dnf, pacman, or other package-manager installs
 - wrappers that simply call a package manager
 - IDE extensions and marketplace installs
 
-Platform support:
+Platforms:
 
 - macOS and Linux: Bash scripts under `scripts/` plus the `uninstall.sh` dispatcher.
 - Windows: native PowerShell support through `uninstall.ps1` for verified custom Windows installers only.
 - Windows Git Bash, MSYS2, and WSL are not the primary Windows path. Use `uninstall.ps1` for native Windows installs.
 
-## Safety Model
+## 🛡️ Safety Model
 
 Each script separates:
 
@@ -108,6 +112,6 @@ Default uninstall removes install artifacts only. User data is kept unless `--pu
 
 Shared shell profile changes are not edited automatically. Installers commonly add `~/.local/bin` or another bin directory to PATH, but that path is often shared by many tools.
 
-## Manifests
+## 📦 Manifests
 
 The `manifests/` directory records installer commands, install artifacts, user-data paths, and notes for each supported tool. Scripts should stay aligned with their corresponding manifest.
