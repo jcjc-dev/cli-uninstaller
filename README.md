@@ -90,3 +90,7 @@ Shared shell profile changes are not edited automatically. Installers commonly a
 ## 📦 Manifests
 
 The `manifests/` directory records installer commands, install artifacts, user-data paths, and notes for each supported tool. Scripts should stay aligned with their corresponding manifest.
+
+## 📄 License
+
+MIT. See [LICENSE](LICENSE).
