@@ -36,111 +36,68 @@ Shared shell profile changes are not edited automatically. Installers commonly a
 
 ## Usage
 
-### macOS and Linux
+### Junie CLI
 
-Run the top-level Bash dispatcher directly from GitHub:
-
-```sh
-curl -fsSL https://raw.githubusercontent.com/jcjc-dev/cli-uninstaller/main/uninstall.sh | bash -s -- junie --dry-run
-curl -fsSL https://raw.githubusercontent.com/jcjc-dev/cli-uninstaller/main/uninstall.sh | bash -s -- copilot-cli --dry-run
-curl -fsSL https://raw.githubusercontent.com/jcjc-dev/cli-uninstaller/main/uninstall.sh | bash -s -- claude-code --dry-run
-curl -fsSL https://raw.githubusercontent.com/jcjc-dev/cli-uninstaller/main/uninstall.sh | bash -s -- opencode --dry-run
-```
-
-Remove install artifacts:
+macOS/Linux:
 
 ```sh
 curl -fsSL https://raw.githubusercontent.com/jcjc-dev/cli-uninstaller/main/uninstall.sh | bash -s -- junie
 ```
 
-Remove install artifacts and ask about user data:
-
-```sh
-curl -fsSL https://raw.githubusercontent.com/jcjc-dev/cli-uninstaller/main/uninstall.sh | bash -s -- junie --purge
-```
-
-Non-interactive install-artifact removal:
-
-```sh
-curl -fsSL https://raw.githubusercontent.com/jcjc-dev/cli-uninstaller/main/uninstall.sh | bash -s -- copilot-cli --yes
-```
-
-Non-interactive purge:
-
-```sh
-curl -fsSL https://raw.githubusercontent.com/jcjc-dev/cli-uninstaller/main/uninstall.sh | bash -s -- copilot-cli --yes --purge
-```
-
-Use non-interactive purge only when the caller has already confirmed that deleting the tool's user state is intended.
-
-You can also fetch a tool-specific script directly:
-
-```sh
-curl -fsSL https://raw.githubusercontent.com/jcjc-dev/cli-uninstaller/main/scripts/uninstall-junie.sh | bash -s -- --dry-run
-```
-
-The tool-specific scripts fetch `lib/common.sh` from the default GitHub raw URL when they are not run from a local checkout. Set `CLI_UNINSTALLER_BASE_URL` to test a fork, branch, tag, or local raw host.
-
-### Windows
-
-Run the top-level PowerShell dispatcher directly from GitHub:
-
-```powershell
-& ([scriptblock]::Create((irm https://raw.githubusercontent.com/jcjc-dev/cli-uninstaller/main/uninstall.ps1))) junie -DryRun
-& ([scriptblock]::Create((irm https://raw.githubusercontent.com/jcjc-dev/cli-uninstaller/main/uninstall.ps1))) claude-code -DryRun
-```
-
-Remove install artifacts:
+Windows PowerShell:
 
 ```powershell
 & ([scriptblock]::Create((irm https://raw.githubusercontent.com/jcjc-dev/cli-uninstaller/main/uninstall.ps1))) junie
 ```
 
-Remove install artifacts and ask about user data:
+To also remove Junie user data, add `--purge` on macOS/Linux or `-Purge` on Windows.
 
-```powershell
-& ([scriptblock]::Create((irm https://raw.githubusercontent.com/jcjc-dev/cli-uninstaller/main/uninstall.ps1))) junie -Purge
-```
+### GitHub Copilot CLI
 
-Non-interactive install-artifact removal:
-
-```powershell
-& ([scriptblock]::Create((irm https://raw.githubusercontent.com/jcjc-dev/cli-uninstaller/main/uninstall.ps1))) claude-code -Yes
-```
-
-Non-interactive purge:
-
-```powershell
-& ([scriptblock]::Create((irm https://raw.githubusercontent.com/jcjc-dev/cli-uninstaller/main/uninstall.ps1))) claude-code -Yes -Purge
-```
-
-## Local Development
-
-Dry run from a checkout:
+macOS/Linux custom installer only:
 
 ```sh
-./scripts/uninstall-junie.sh --dry-run
-./scripts/uninstall-copilot-cli.sh --dry-run
-./scripts/uninstall-claude-code.sh --dry-run
-./scripts/uninstall-opencode.sh --dry-run
+curl -fsSL https://raw.githubusercontent.com/jcjc-dev/cli-uninstaller/main/uninstall.sh | bash -s -- copilot-cli
 ```
 
-PowerShell syntax check from a checkout:
+Windows:
+
+Native Windows installs are managed by WinGet and are intentionally out of scope for this repo.
+
+To also remove Copilot CLI user data for the custom installer, add `--purge`.
+
+### Claude Code
+
+macOS/Linux native installer:
+
+```sh
+curl -fsSL https://raw.githubusercontent.com/jcjc-dev/cli-uninstaller/main/uninstall.sh | bash -s -- claude-code
+```
+
+Windows PowerShell native installer:
 
 ```powershell
-$null = [scriptblock]::Create((Get-Content .\uninstall.ps1 -Raw))
+& ([scriptblock]::Create((irm https://raw.githubusercontent.com/jcjc-dev/cli-uninstaller/main/uninstall.ps1))) claude-code
 ```
+
+Package-manager installs are out of scope. To also remove Claude Code user data, add `--purge` on macOS/Linux or `-Purge` on Windows.
+
+### OpenCode
+
+macOS/Linux custom installer:
+
+```sh
+curl -fsSL https://raw.githubusercontent.com/jcjc-dev/cli-uninstaller/main/uninstall.sh | bash -s -- opencode
+```
+
+Windows:
+
+No verified custom Windows installer is currently covered.
+
+To also remove OpenCode user data for the custom installer, add `--purge`.
+
+Use `--yes` or `-Yes` only when the caller has already confirmed that deleting install artifacts without prompts is intended.
 
 ## Manifests
 
 The `manifests/` directory records installer commands, install artifacts, user-data paths, and notes for each supported tool. Scripts should stay aligned with their corresponding manifest.
-
-## Validation
-
-Run:
-
-```sh
-bash -n uninstall.sh lib/common.sh scripts/*.sh
-```
-
-Optionally run dry-run checks for each script before publishing changes.
