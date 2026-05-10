@@ -1,0 +1,21 @@
+{
+  "id": "opencode",
+  "name": "OpenCode",
+  "install_commands": [
+    "curl -fsSL https://opencode.ai/install | bash",
+    "curl -fsSL https://opencode.ai/install.sh | sh"
+  ],
+  "installer_artifacts": [
+    "~/.opencode/bin/opencode"
+  ],
+  "user_data": [
+    "${OPENCODE_CONFIG:-${XDG_CONFIG_HOME:-~/.config}/opencode}",
+    "${XDG_DATA_HOME:-~/.local/share}/opencode",
+    "${XDG_CACHE_HOME:-~/.cache}/opencode",
+    "~/.opencode"
+  ],
+  "notes": [
+    "The observed installer installs into ~/.opencode/bin.",
+    "OpenCode documentation and ecosystem references identify ~/.config/opencode as the global config path; data/cache directories are purge-only."
+  ]
+}

@@ -1,0 +1,20 @@
+{
+  "id": "copilot-cli",
+  "name": "GitHub Copilot CLI",
+  "install_commands": [
+    "curl -fsSL https://gh.io/copilot-install | bash",
+    "wget -qO- https://gh.io/copilot-install | bash"
+  ],
+  "installer_artifacts": [
+    "${PREFIX:-~/.local}/bin/copilot",
+    "/usr/local/bin/copilot"
+  ],
+  "user_data": [
+    "${COPILOT_HOME:-~/.copilot}",
+    "${COPILOT_CACHE_HOME:-platform cache directory}"
+  ],
+  "notes": [
+    "The install script defaults PREFIX to ~/.local for non-root users and /usr/local for root, then extracts copilot into PREFIX/bin.",
+    "GitHub documents ~/.copilot as the default configuration directory and documents platform cache directories separately."
+  ]
+}

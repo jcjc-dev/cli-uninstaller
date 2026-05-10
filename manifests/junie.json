@@ -1,0 +1,19 @@
+{
+  "id": "junie",
+  "name": "JetBrains Junie CLI",
+  "install_commands": [
+    "curl -fsSL https://junie.jetbrains.com/install.sh | bash",
+    "curl -fsSL https://junie.jetbrains.com/install-eap.sh | bash"
+  ],
+  "installer_artifacts": [
+    "~/.local/bin/junie",
+    "${JUNIE_DATA:-~/.local/share/junie}"
+  ],
+  "user_data": [
+    "~/.junie"
+  ],
+  "notes": [
+    "The installer writes a shim to ~/.local/bin/junie and stores versions, updates, and the current symlink under JUNIE_DATA, defaulting to ~/.local/share/junie.",
+    "Junie documentation describes ~/.junie/allowlist.json and session history; remove ~/.junie only after user confirmation."
+  ]
+}
